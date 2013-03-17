@@ -67,6 +67,7 @@ sys.stdout.write(prompt)
 
 EOF
 let g:typescript_tools_started = 1
+echo g:typescript_tools_started
 endfunction
 
 " update TSS with current file source
