@@ -142,6 +142,7 @@ endfunction
 
 " TSS command tracing, off by default
 python traceFlag = False
+"python traceFlag = True 
 
 command! -nargs=1 TSStrace call TSStrace(<f-args>)
 function! TSStrace(flag)
