@@ -65,6 +65,7 @@ sys.stdout.write(prompt)
 # print prompt
 
 EOF
+let g:typescript_tools_started = 1
 endfunction
 
 " update TSS with current file source
@@ -128,6 +129,7 @@ else:
   sys.stdout.write('TSS not running\n')
 
 EOF
+unlet g:typescript_tools_started
 endfunction
 
 "" create quickfix list from TSS errors
