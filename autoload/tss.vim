@@ -1,5 +1,6 @@
 
 " pass a command to typescript service, get answer
+" pass a command to typescript service, get answer
 function! tss#cmd(cmd,opts)
 python <<EOF
 
