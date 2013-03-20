@@ -1,4 +1,3 @@
-
 " pass a command to typescript service, get answer
 " pass a command to typescript service, get answer
 function! tss#cmd(cmd,opts)
@@ -67,13 +66,13 @@ sys.stdout.write(prompt)
 
 EOF
 let g:typescript_tools_started = 1
-echo g:typescript_tools_started
 endfunction
 
 " update TSS with current file source
 " TODO: integrate into TSScmd
 function! tss#update()
-  tss#cmd("update ".line('$')." ".expand("%:p"),{'rawcmd':1,'lines':getline(1,line('$'))})
+  let filename = substitute(expand("%:p"), "\\", "\/", "g")
+  call tss#cmd("update ".line('$')." ".filename,{'rawcmd':1,'lines':getline(1,line('$'))})
 endfunction
 
 " completions
@@ -95,7 +94,7 @@ endfunction
 
 " reload project sources
 function! tss#reload()
-  tss#cmd("reload",{'rawcmd':1})
+  call tss#cmd("reload",{'rawcmd':1})
 endfunction
 
 " TSS command tracing, off by default
@@ -223,4 +222,3 @@ endfunction
 "  endif
 "endfunction
 "set omnifunc=TSScompleteFunc
-"
