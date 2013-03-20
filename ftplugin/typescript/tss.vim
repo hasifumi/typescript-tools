@@ -1,4 +1,3 @@
-
 " echo symbol/type of item under cursor
 command! TSSsymbol call tss#cmd("symbol",{})
 command! TSStype call tss#cmd("type",{})
@@ -23,7 +22,7 @@ command! TSScomplete call tss#complete()
 command! TSSreload call tss#reload()
 
 " create quickfix list from TSS errors
-"command! TSSshowErrors call TSSshowErrors()
+command! TSSshowErrors call tss#showErrors()
 
 " start typescript service process asynchronously, via python
 " TODO: the only reason for shell=True is to avoid popup console window;

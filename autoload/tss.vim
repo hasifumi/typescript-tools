@@ -133,22 +133,37 @@ EOF
 unlet g:typescript_tools_started
 endfunction
 
-"" create quickfix list from TSS errors
-"command! TSSshowErrors call TSSshowErrors()
-"function! TSSshowErrors()
-"  let info = TSScmd("showErrors",{'rawcmd':1})
-"  if type(info)==type([])
-"    for i in info
-"      let i['lnum']     = i['start']['line']
-"      let i['col']      = i['start']['col']
-"      let i['filename'] = i['file']
-"    endfor
-"    call setqflist(info)
-"  else
-"    echoerr info
-"  endif
-"endfunction
-"
+" create quickfix list from TSS errors
+function! tss#showErrors()
+  let info = tss#cmd("showErrors",{'rawcmd':1})
+  if type(info)==type([])
+    for i in info
+      let i['lnum']     = i['start']['line']
+      let i['col']      = i['start']['col']
+      let i['filename'] = i['file']
+    endfor
+    call setqflist(info)
+  else
+    echoerr info
+  endif
+endfunction
+
+" jump to definition of item under cursor
+function! tss#def(cmd)
+  let info = tss#cmd("definition",{})
+  if type(info)!=type({}) || info.file=='null' || type(info.min)!=type([])
+    echoerr 'no useable definition information'
+    return info
+  endif
+  if a:cmd=="pedit"
+    exe a:cmd.'+'.info.min[0].' '.info.file
+  else
+    exe a:cmd.' '.info.file
+    call cursor(info.min[0],info.min[1])
+  endif
+  return info
+endfunction
+
 "" echo symbol/type of item under cursor
 "command! TSSsymbol echo TSScmd("symbol",{})
 "command! TSStype echo TSScmd("type",{})
@@ -160,26 +175,6 @@ endfunction
 "function! tss#balloon()
 "  let file = expand("#".v:beval_bufnr.":p")
 "  return TSScmd("symbol ".v:beval_lnum." ".v:beval_col." ".file,{'rawcmd':1})
-"endfunction
-"
-"" jump to definition of item under cursor
-"command! TSSdef call TSSdef("edit")
-"command! TSSdefpreview call TSSdef("pedit")
-"command! TSSdefsplit call TSSdef("split")
-"command! TSSdeftab call TSSdef("tabe")
-"function! TSSdef(cmd)
-"  let info = TSScmd("definition",{})
-"  if type(info)!=type({}) || info.file=='null' || type(info.min)!=type([])
-"    echoerr 'no useable definition information'
-"    return info
-"  endif
-"  if a:cmd=="pedit"
-"    exe a:cmd.'+'.info.min[0].' '.info.file
-"  else
-"    exe a:cmd.' '.info.file
-"    call cursor(info.min[0],info.min[1])
-"  endif
-"  return info
 "endfunction
 "
 "" dump TSS internal file source
